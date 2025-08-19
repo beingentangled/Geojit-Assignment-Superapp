@@ -1,0 +1,45 @@
+app_id: com.example.superapp.home_module
+parent_app: com.example.superapp
+
+# Home Module specific configuration
+module:
+  name: "home_module"
+  version: "1.0.0"
+  channel: "home_module"
+
+# Module-specific update settings
+update_settings:
+  auto_update: true
+  rollback_enabled: true
+  staging_percentage: 10
+
+# Dependencies on other modules
+dependencies:
+  core_contracts: ">=1.0.0"
+
+# Feature flags for this module
+feature_flags:
+  new_home_ui: false
+  enhanced_navigation: true
+  quick_actions: false
+
+# A/B testing configurations
+ab_tests:
+  home_layout_v2:
+    enabled: false
+    percentage: 20
+    variants: ["current", "new_layout"]
+
+# Performance thresholds
+performance_limits:
+  startup_time_ms: 200
+  memory_limit_mb: 50
+
+# Analytics specific to home module
+analytics:
+  track_navigation_patterns: true
+  track_feature_usage: true
+  custom_events:
+    - "home_tile_clicked"
+    - "navigation_used"
+    - "quick_action_triggered"

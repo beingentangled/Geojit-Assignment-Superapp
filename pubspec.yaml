@@ -1,0 +1,32 @@
+name: superapp
+description: "A modular Flutter super app with native modules and advanced features."
+# This app integrates multiple modules and native functionalities to provide a comprehensive user experience.
+# It includes home, profile, and jobs modules, along with native modules for payment processing,
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.8.1
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^1.0.8
+  # Added for routing and modular packages
+  go_router: ^14.2.0
+  module_contracts:
+    path: packages/module_contracts
+  home_module:
+    path: modules/home_module
+  profile_module:
+    path: modules/profile_module
+  jobs_module:
+    path: modules/jobs_module
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true

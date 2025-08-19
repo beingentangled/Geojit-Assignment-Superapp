@@ -1,0 +1,270 @@
+name: Independent Module Updates
+
+on:
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'modules/**'
+      - 'native_modules/**'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'modules/**'
+      - 'native_modules/**'
+
+env:
+  SHOREBIRD_TOKEN: ${{ secrets.SHOREBIRD_TOKEN }}
+
+jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      home_module: ${{ steps.changes.outputs.home_module }}
+      profile_module: ${{ steps.changes.outputs.profile_module }}
+      jobs_module: ${{ steps.changes.outputs.jobs_module }}
+      camera_native: ${{ steps.changes.outputs.camera_native }}
+      payment_native: ${{ steps.changes.outputs.payment_native }}
+      biometric_native: ${{ steps.changes.outputs.biometric_native }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          filters: |
+            home_module:
+              - 'modules/home_module/**'
+            profile_module:
+              - 'modules/profile_module/**'
+            jobs_module:
+              - 'modules/jobs_module/**'
+            camera_native:
+              - 'native_modules/camera_native/**'
+            payment_native:
+              - 'native_modules/payment_native/**'
+            biometric_native:
+              - 'native_modules/biometric_native/**'
+
+  deploy-home-module:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.home_module == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.0'
+      - uses: shorebirdtech/setup-shorebird@v1
+        with:
+          flutter-version: '3.24.0'
+
+      - name: Install dependencies
+        run: |
+          cd modules/home_module
+          flutter pub get
+
+      - name: Run tests
+        run: |
+          cd modules/home_module
+          flutter test
+
+      - name: Deploy to staging
+        if: github.ref != 'refs/heads/main'
+        run: |
+          ./scripts/deploy-modules.sh deploy-module home_module --staging
+
+      - name: Deploy to production
+        if: github.ref == 'refs/heads/main'
+        run: |
+          ./scripts/deploy-modules.sh deploy-module home_module --production
+
+  deploy-profile-module:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.profile_module == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.0'
+      - uses: shorebirdtech/setup-shorebird@v1
+        with:
+          flutter-version: '3.24.0'
+
+      - name: Install dependencies
+        run: |
+          cd modules/profile_module
+          flutter pub get
+
+      - name: Run tests
+        run: |
+          cd modules/profile_module
+          flutter test
+
+      - name: Deploy to staging
+        if: github.ref != 'refs/heads/main'
+        run: |
+          ./scripts/deploy-modules.sh deploy-module profile_module --staging
+
+      - name: Deploy to production
+        if: github.ref == 'refs/heads/main'
+        run: |
+          ./scripts/deploy-modules.sh deploy-module profile_module --production
+
+  deploy-jobs-module:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.jobs_module == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.0'
+      - uses: shorebirdtech/setup-shorebird@v1
+        with:
+          flutter-version: '3.24.0'
+
+      - name: Install dependencies
+        run: |
+          cd modules/jobs_module
+          flutter pub get
+
+      - name: Run tests
+        run: |
+          cd modules/jobs_module
+          flutter test
+
+      - name: Deploy to staging
+        if: github.ref != 'refs/heads/main'
+        run: |
+          ./scripts/deploy-modules.sh deploy-module jobs_module --staging
+
+      - name: Deploy to production
+        if: github.ref == 'refs/heads/main'
+        run: |
+          ./scripts/deploy-modules.sh deploy-module jobs_module --production
+
+  deploy-camera-native:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.camera_native == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.0'
+      - uses: shorebirdtech/setup-shorebird@v1
+        with:
+          flutter-version: '3.24.0'
+
+      - name: Build Android AAR
+        run: |
+          cd native_modules/camera_native/android
+          ./gradlew assembleRelease
+
+      - name: Run native tests
+        run: |
+          cd native_modules/camera_native
+          flutter test
+
+      - name: Deploy to staging
+        if: github.ref != 'refs/heads/main'
+        run: |
+          ./scripts/deploy-modules.sh deploy-module camera_native --staging
+
+      - name: Deploy to production
+        if: github.ref == 'refs/heads/main'
+        run: |
+          ./scripts/deploy-modules.sh deploy-module camera_native --production
+
+  deploy-payment-native:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.payment_native == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.0'
+      - uses: shorebirdtech/setup-shorebird@v1
+        with:
+          flutter-version: '3.24.0'
+
+      - name: Build and test
+        run: |
+          cd native_modules/payment_native
+          flutter pub get
+          flutter test
+
+      - name: Deploy to staging
+        if: github.ref != 'refs/heads/main'
+        run: |
+          ./scripts/deploy-modules.sh deploy-module payment_native --staging
+
+      - name: Deploy to production
+        if: github.ref == 'refs/heads/main'
+        run: |
+          ./scripts/deploy-modules.sh deploy-module payment_native --production
+
+  deploy-biometric-native:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.biometric_native == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.24.0'
+      - uses: shorebirdtech/setup-shorebird@v1
+        with:
+          flutter-version: '3.24.0'
+
+      - name: Build and test
+        run: |
+          cd native_modules/biometric_native
+          flutter pub get
+          flutter test
+
+      - name: Deploy to staging
+        if: github.ref != 'refs/heads/main'
+        run: |
+          ./scripts/deploy-modules.sh deploy-module biometric_native --staging
+
+      - name: Deploy to production
+        if: github.ref == 'refs/heads/main'
+        run: |
+          ./scripts/deploy-modules.sh deploy-module biometric_native --production
+
+  notify-deployment:
+    needs: [detect-changes, deploy-home-module, deploy-profile-module, deploy-jobs-module, deploy-camera-native, deploy-payment-native, deploy-biometric-native]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify deployment status
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          channel: '#deployments'
+          text: |
+            Independent module deployment completed!
+            
+            Modules deployed:
+            - Home Module: ${{ needs.detect-changes.outputs.home_module == 'true' && '✅' || '⏭️' }}
+            - Profile Module: ${{ needs.detect-changes.outputs.profile_module == 'true' && '✅' || '⏭️' }}
+            - Jobs Module: ${{ needs.detect-changes.outputs.jobs_module == 'true' && '✅' || '⏭️' }}
+            - Camera Native: ${{ needs.detect-changes.outputs.camera_native == 'true' && '✅' || '⏭️' }}
+            - Payment Native: ${{ needs.detect-changes.outputs.payment_native == 'true' && '✅' || '⏭️' }}
+            - Biometric Native: ${{ needs.detect-changes.outputs.biometric_native == 'true' && '✅' || '⏭️' }}
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}

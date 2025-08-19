@@ -1,0 +1,11 @@
+name: module_contracts
+description: Contracts and shared interfaces for super app modules.
+version: 0.0.1
+
+environment:
+  sdk: ">=3.0.0 <4.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  go_router: ^14.2.0

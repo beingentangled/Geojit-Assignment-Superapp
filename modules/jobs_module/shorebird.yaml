@@ -1,0 +1,55 @@
+app_id: com.example.superapp.jobs_module
+parent_app: com.example.superapp
+
+# Jobs Module specific configuration
+module:
+  name: "jobs_module"
+  version: "1.0.0"
+  channel: "jobs_module"
+
+# Module-specific update settings
+update_settings:
+  auto_update: true
+  rollback_enabled: true
+  staging_percentage: 20
+
+# Dependencies on other modules
+dependencies:
+  core_contracts: ">=1.0.0"
+  profile_module: ">=1.0.0"
+
+# Feature flags for this module
+feature_flags:
+  job_alerts: true
+  salary_insights: false
+  video_interviews: false
+  ai_job_matching: true
+
+# A/B testing configurations
+ab_tests:
+  job_card_design:
+    enabled: true
+    percentage: 25
+    variants: ["compact", "detailed", "visual"]
+
+  search_algorithm:
+    enabled: false
+    percentage: 10
+    variants: ["relevance", "ai_powered"]
+
+# Performance thresholds
+performance_limits:
+  startup_time_ms: 300
+  memory_limit_mb: 60
+  search_response_time_ms: 800
+
+# Analytics specific to jobs module
+analytics:
+  track_job_applications: true
+  track_search_patterns: true
+  custom_events:
+    - "job_viewed"
+    - "application_started"
+    - "application_completed"
+    - "job_saved"
+    - "search_performed"

@@ -1,0 +1,42 @@
+plugins:
+  camera_native:
+    path: native_modules/camera_native/
+  payment_native:
+    path: native_modules/payment_native/
+  biometric_native:
+    path: native_modules/biometric_native/
+  maps_native:
+    path: native_modules/maps_native/
+
+packages:
+  superapp:
+    path: ./
+  module_contracts:
+    path: packages/module_contracts/
+  home_module:
+    path: modules/home_module/
+  profile_module:
+    path: modules/profile_module/
+  jobs_module:
+    path: modules/jobs_module/
+
+  # Native module Flutter plugins
+  camera_native:
+    path: native_modules/camera_native/
+  payment_native:
+    path: native_modules/payment_native/
+  biometric_native:
+    path: native_modules/biometric_native/
+  maps_native:
+    path: native_modules/maps_native/
+
+scripts:
+  build:native:android: >
+    cd native_modules/android_modules && 
+    ./gradlew assembleRelease
+  build:native:ios: >
+    cd native_modules/ios_modules && 
+    xcodebuild -workspace NativeModules.xcworkspace -scheme "All" -configuration Release
+  generate:bindings: >
+    cd native_modules/shared_bindings &&
+    dart run ffigen
