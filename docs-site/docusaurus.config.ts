@@ -38,13 +38,13 @@ const config: Config = {
         docs: {
           sidebarPath: './sidebars.ts',
           editUrl:
-            'https://github.com/claysol/flutter-superapp/tree/main/docs-site/',
+            'https://github.com/beingentangled/Geojit-Assignment-Superapp/tree/main/docs-site/',
         },
         blog: {
           showReadingTime: true,
 
           editUrl:
-            'https://github.com/claysol/flutter-superapp/tree/main/docs-site/',
+            'https://github.com/beingentangled/Geojit-Assignment-Superapp/tree/main/docs-site/',
         },
         theme: {
           customCss: './src/css/custom.css',
@@ -70,7 +70,7 @@ const config: Config = {
           label: 'Architecture Guide',
         },
         {
-          href: 'https://github.com/claysol/flutter-superapp',
+          href: 'https://github.com/beingentangled/Geojit-Assignment-Superapp',
           label: 'GitHub',
           position: 'right',
         },
@@ -89,36 +89,6 @@ const config: Config = {
             {
               label: 'Module Development',
               to: '/docs/modules/creating-modules',
-            },
-          ],
-        },
-        {
-          title: 'Community',
-          items: [
-            {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/flutter-superapp',
-            },
-            {
-              label: 'Discord',
-              href: 'https://discordapp.com/invite/flutter',
-            },
-            {
-              label: 'Twitter',
-              href: 'https://twitter.com/flutterdev',
-            },
-          ],
-        },
-        {
-          title: 'More',
-          items: [
-            {
-              label: 'Blog',
-              to: '/blog',
-            },
-            {
-              label: 'GitHub',
-              href: 'https://github.com/claysol/flutter-superapp',
             },
           ],
         },

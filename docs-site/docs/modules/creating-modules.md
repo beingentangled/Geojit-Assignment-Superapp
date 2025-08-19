@@ -520,4 +520,3 @@ You've created a fully independent, testable, and deployable module that integra
 
 - [Architecture Overview](../architecture/overview.md)
 - [Framework Comparisons](../comparisons/framework-comparison.md)
-- [Deployment Guide](../deployment/firebase.md)

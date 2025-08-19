@@ -81,7 +81,7 @@ Built to handle applications with:
 
 ```bash
 # Clone the architecture template
-git clone https://github.com/claysol/flutter-superapp.git
+git clone https://github.com/beingentangled/Geojit-Assignment-Superapp.git
 cd flutter-superapp
 
 # Install dependencies

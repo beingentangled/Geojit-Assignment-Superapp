@@ -19,11 +19,6 @@ function HomepageHeader() {
         <p className="hero__subtitle">{siteConfig.tagline}</p>
         <div className={styles.buttons}>
           <Link
-            className="button button--secondary button--lg"
-            to="/docs/intro">
-            Get Started - 5min ⏱️
-          </Link>
-          <Link
             className="button button--outline button--secondary button--lg"
             to="/docs/comparisons/framework-comparison"
             style={{marginLeft: '10px'}}>
@@ -43,7 +38,6 @@ export default function Home(): ReactNode {
       description="The definitive guide to building scalable cross-platform applications with modular Flutter architecture that surpasses React Native, Ionic, and traditional approaches.">
       <HomepageHeader />
       <main>
-        <HomepageFeatures />
 
         {/* Architecture Highlights Section */}
         <section className={styles.architectureSection}>
